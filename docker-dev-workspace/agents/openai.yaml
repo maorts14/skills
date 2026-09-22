@@ -1,0 +1,3 @@
+interface:
+  display_name: "Docker Dev Workspace"
+  short_description: "Create cross-platform Docker dev setups"
