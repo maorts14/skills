@@ -25,6 +25,16 @@ When event-based reload is unreliable, use the watcher's polling option and expl
 
 For Nodemon, `--legacy-watch` (or `-L`) enables polling. For Chokidar-based tools, use their documented polling setting rather than inventing a busy loop. Note the recommended Windows alternative: keep the repository in the WSL/Linux filesystem when using Docker Desktop, then verify normal file-event watching before removing polling.
 
+## Debugging a process in a container
+
+Add debugger support when the project's runtime supports it and it will improve the local workflow. Treat it as a development-only feature: enable the runtime's inspector or debug server on a container interface, publish its port only in the development Compose configuration, and never expose it from production.
+
+Docker does not receive breakpoints. It only routes the debug connection from the host to the runtime. The developer's editor or IDE attaches to the published localhost port and sends breakpoint requests using the runtime's debug protocol. Configure the editor explicitly rather than assuming it discovers the container automatically.
+
+For an editor attach configuration, supply the published host address and port plus a mapping between local source paths and container paths. Enable source maps when the runtime executes transpiled code, such as TypeScript. With a process watcher that replaces the runtime after source edits, use the IDE's supported reconnect option or document that the developer must reattach. Verify by placing a breakpoint in mounted source, invoking the relevant code path, and inspecting the pause.
+
+Do not generate VS Code, JetBrains, or another editor's files unless that editor is already used by the project or the user asks for it. Explain the portable ingredients—runtime debug server, Compose port mapping, and local-to-container source mapping—so equivalent attach settings can be made in any IDE.
+
 ## Developer experience and verification
 
 Provide a concise start command, local URLs/ports, stop command, and any first-run requirements. Do not put real secrets in images or Compose files; use ignored local environment files plus committed examples.
@@ -35,4 +45,5 @@ Before finishing, verify proportionally to the project:
 2. Confirm health checks and service status.
 3. Confirm the application reaches its expected local endpoint.
 4. Edit a watched source file or otherwise demonstrate that the intended reload path works.
-5. State any unverified platform-specific assumption rather than presenting it as established fact.
+5. When debugger support is included, attach and stop at a real breakpoint.
+6. State any unverified platform-specific assumption rather than presenting it as established fact.
