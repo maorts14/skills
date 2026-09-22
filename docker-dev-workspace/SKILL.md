@@ -29,6 +29,8 @@ For Nodemon, `--legacy-watch` (or `-L`) enables polling. For Chokidar-based tool
 
 Add debugger support when the project's runtime supports it and it will improve the local workflow. Treat it as a development-only feature: enable the runtime's inspector or debug server on a container interface, publish its port only in the development Compose configuration, and never expose it from production.
 
+Before creating an editor-specific configuration, inspect the repository for existing editor settings and developer documentation. If they identify the supported IDE, follow that convention. If they do not and debugger setup is in scope, ask which editor or IDE developers use, which operating systems must be supported, and whether its project configuration should be committed. Do not ask when the requested work does not include an editor integration; provide the portable debug endpoint and connection details instead.
+
 Docker does not receive breakpoints. It only routes the debug connection from the host to the runtime. The developer's editor or IDE attaches to the published localhost port and sends breakpoint requests using the runtime's debug protocol. Configure the editor explicitly rather than assuming it discovers the container automatically.
 
 For an editor attach configuration, supply the published host address and port plus a mapping between local source paths and container paths. Enable source maps when the runtime executes transpiled code, such as TypeScript. With a process watcher that replaces the runtime after source edits, use the IDE's supported reconnect option or document that the developer must reattach. Verify by placing a breakpoint in mounted source, invoking the relevant code path, and inspecting the pause.
