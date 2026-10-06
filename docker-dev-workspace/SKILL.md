@@ -27,7 +27,7 @@ For Nodemon, `--legacy-watch` (or `-L`) enables polling. For Chokidar-based tool
 
 ## Debugging a process in a container
 
-Add debugger support when the project's runtime supports it and it will improve the local workflow. Treat it as a development-only feature: enable the runtime's inspector or debug server on a container interface, publish its port only in the development Compose configuration, and never expose it from production.
+Add debugger support when the project's runtime supports it and it will improve the local workflow. Treat it as a development-only feature: enable the runtime's inspector or debug server on a container interface, publish its port only in the development Compose configuration, and never expose it from production. Bind a host-accessible debug port explicitly to loopback (for example, `127.0.0.1:9229:9229`), because an unqualified Compose port mapping can listen on all host interfaces.
 
 Before creating an editor-specific configuration, inspect the repository for existing editor settings and developer documentation. If they identify the supported IDE, follow that convention. Otherwise, when debugger setup is in scope, ask which editor or IDE developers use and whether its project configuration should be committed. Treat Windows, macOS, and Linux compatibility as the default requirement; do not ask the user to choose an operating system. Do not ask when the requested work does not include an editor integration; provide the portable debug endpoint and connection details instead.
 
